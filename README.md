@@ -20,6 +20,8 @@
 
 ## Dashboard Pages and Visualizations:
 
+*Available in repo files under name: "Dashboard-Igor-Gryzlo.html"
+
 ### **Page 1**:
 1. **Scatterplots**:  
    * Apartment price vs. building age.  
