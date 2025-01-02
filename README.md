@@ -54,7 +54,9 @@
    * Generated a 3D price vs. distance histogram with kernel density estimation using **plot3D**.
 
 ## Files:
-* **R Markdown Code**: Embedded in the repository for reproducibility and customization.
-* **Dashboard Outputs**: Interactive visuals included as part of the hosted dashboard.
+* **Dashboard HousCosts.rmd**: Whole R Markdown script I used.
+* **Dashboard HousCosts.html**: Pre-Generated dashboard in .html format
+* **Data HousCosts**: Data used in this project
+
 
 ## This is the end of this project, I hope you enjoyed it as much as I did!
