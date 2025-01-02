@@ -1,0 +1,175 @@
+---
+title: "Model Mieszkań Wrocław"
+author: "Igor Gryzlo"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: rows
+    social: menu
+    source_code: embed
+---
+
+```{r setup, include=FALSE}
+library(ggplot2)
+library(plotly)
+library(plyr)
+library(flexdashboard)
+library(corrplot)
+library(readxl)
+Dane <- as.data.frame(read_excel("C:fakepath/daneig.xlsx"))
+```
+
+Strona nr.1
+=======================================================================
+
+Row
+-----------------------------------------------------------------------
+
+### Wykres Ceny i Lat użytkowania Mieszkania (1)
+
+```{r}
+plot(Dane$Cena~Dane$`Lata uzytkowania`)
+```
+
+
+### Wykres ceny i odległości od centrum mieszkania
+
+```{r}
+plot(Dane$Cena~Dane$`Odległosc od centrum`)
+Model1<-lm(Dane$Cena~Dane$`Odległosc od centrum`)
+abline(Model1$coef,lty=5)
+
+```
+
+Row
+-----------------------------------------------------------------------
+
+### Wykres Przedstawiający zależności wszystkich parametrów
+
+```{r}
+colnames(Dane)<-c("Cena","Lata","Odleglosc","Metraz")
+corrplot(cor(Dane))
+```
+
+### Wykres Kwantyl Kwantyl
+
+```{r}
+Model <- lm(Cena~Lata+Odleglosc+Metraz,data=Dane)
+par(mfrow=c(1,1))
+qqnorm(rstudent(Model),ylab="Studentized residuals")
+abline(0,1)
+
+```
+
+### HeatMap
+
+```{r}
+heatmap(abs(cor(Dane)),symm=T)
+
+```
+
+Strona nr.2
+=======================================================================
+
+Row
+-----------------------------------------------------------------------
+
+### Wykres Lat i ceny
+
+```{r}
+p <- ggplot(Dane, aes(x=Lata, y=Cena)) +
+        	geom_point(shape=1)  	# Use hollow circles
+ggplotly(p)
+
+```
+
+### Wykres 6
+
+```{r}
+p <- ggplot(Dane, aes(x=Lata, y=Cena)) +
+        	geom_point(shape=1)+  	# Use hollow circles
+        	geom_smooth(method=lm, color="red")   # Add linear regression line
+ggplotly(p)
+
+```
+
+Row
+-----------------------------------------------------------------------
+
+### Wykres 7
+
+```{r}
+p <- ggplot(Dane, aes(x=Lata, y=Cena)) +
+        	geom_point(shape=1)+  	# Use hollow circles
+        	geom_smooth()   # Add a loess smoothed fit curve with confidence
+ggplotly(p)
+
+```
+
+### Wykres 8
+
+```{r}
+p <- ggplot(Dane, aes(x=Lata, y=Cena)) +
+ 	geom_point(alpha = 0.5) +
+ 	geom_density_2d() +
+ 	theme(panel.background = element_rect(fill = '#ffffff'))
+ggplotly(p)
+```
+
+Strona nr.3
+=======================================================================
+
+Row
+-----------------------------------------------------------------------
+
+### Lista danych o mieszkaniach
+
+```{r}
+ #Source: https://www.htmlwidgets.org/showcase_datatables.html
+library(DT)
+datatable(Dane, options = list(pageLength = 10))
+```
+
+### Wykres mieszkań 3D
+
+```{r}
+
+library(threejs)
+z <- Dane$Cena
+x <- Dane$Lata
+y <- Dane$Odleglosc
+scatterplot3js(x,y,z, color=rainbow(length(z)))
+
+```
+
+
+
+##############################################
+
+Strona nr.4
+=======================================================================
+
+Row
+-----------------------------------------------------------------------
+
+### scatterplot3d()
+```{r}
+library("scatterplot3d")
+scatterplot3d(Dane$Lata,Dane$Metraz,Dane$Price)
+
+```
+Row
+-----------------------------------------------------------------------
+
+### hist3D
+```{r}
+library("plot3D")
+library("MASS")
+est_jadrowy<-kde2d(Dane$Odleglosc,Dane$Cena)
+par(mfrow=c(1,1))
+hist3D(x=est_jadrowy$x,y=est_jadrowy$y,z=est_jadrowy$z,phi = 0, theta = 100,main = "Mieszkania Wrocław",xlab="Odleglosc od centrum",ylab="Cena")
+```
+
+
+##############################################
+
+
