@@ -55,7 +55,7 @@
 
 ## Files:
 * **Dashboard HousCosts.rmd**: Whole R Markdown script I used.
-* **Dashboard HousCosts.html**: Pre-Generated dashboard in .html format
+* **Dashboard Igor-Gryzlo**: Pre-Generated dashboard in .html format
 * **Data HousCosts**: Data used in this project
 
 
